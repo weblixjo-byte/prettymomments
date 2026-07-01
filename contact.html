@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Contact Our Design Team | Pretty Moments Bespoke Favors</title>
+  <meta name="description" content="Reach out to the Pretty Moments team for custom event favor design consultations. USA support: +1 (504) 777-8801, Jordan support: +962 79 668 5110.">
+  <meta name="keywords" content="contact favors shop, order wedding favors, customize giveaways Jordan, USA favors consultation">
+  
+  <!-- OpenGraph / Social Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact Our Design Team | Pretty Moments Bespoke Favors">
+  <meta property="og:description" content="Get in touch with Pretty Moments to plan your custom event giveaways. Book consultations or ask questions.">
+  <meta property="og:image" content="images/wedding_favors.png">
+  <meta property="og:url" content="https://prettymoments24.vercel.app/contact">
+
+  <!-- Schema.org JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Pretty Moments Contact Page",
+    "description": "Contact coordinates and inquiry forms for Pretty Moments custom giveaways.",
+    "url": "https://prettymoments24.vercel.app/contact"
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .contact-hero {
+      padding: 160px 0 60px;
+      background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-color) 100%);
+      text-align: center;
+    }
+    .contact-hero h1 {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+    }
+    .contact-hero h1 span {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 300;
+      font-size: 1.5rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--primary-gold);
+      margin-bottom: 10px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 40px;
+    }
+    @media (max-width: 900px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+    }
+    .contact-info-panel {
+      background: var(--white);
+      border: 1px solid var(--border-soft);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--shadow-soft);
+    }
+    .contact-info-panel h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+      color: var(--text-dark);
+    }
+    .contact-card-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      align-items: flex-start;
+    }
+    .contact-card-item .icon {
+      width: 48px;
+      height: 48px;
+      background-color: rgba(213, 161, 83, 0.08);
+      color: var(--primary-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-card-item .icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+    .contact-card-item h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .contact-card-item p {
+      font-size: 0.9rem;
+      color: var(--text-taupe);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER / NAVIGATION (Injected via JS) -->
+  <div id="global-header-placeholder"></div>
+
+  <main>
+    
+    <!-- Hero Banner -->
+    <section class="contact-hero">
+      <div class="container">
+        <div class="reveal">
+          <h1><span>Get In Touch</span>Contact Our Design Team</h1>
+          <p style="max-width: 600px; margin: 0 auto; color: var(--text-taupe);">Have a question or want to request a bespoke quote? Send us an inquiry below or reach out to our regional design consultants.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form & Info Grid -->
+    <section class="section-padding" style="background-color: var(--white);">
+      <div class="container">
+        
+        <div class="contact-grid">
+          
+          <!-- Contact Form Panel -->
+          <div class="reveal">
+            <form id="contact-form" class="custom-form" style="background: var(--bg-cream); border-radius:24px; padding:40px; border: 1px solid var(--border-soft);">
+              <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--text-dark); margin-bottom: 24px;">Send A Message</h3>
+              
+              <div class="form-group">
+                <label for="contact-name">Your Full Name *</label>
+                <input type="text" id="contact-name" required placeholder="e.g. Sarah Jenkins">
+              </div>
+
+              <div class="form-group">
+                <label for="contact-email">Email Address *</label>
+                <input type="email" id="contact-email" required placeholder="e.g. sarah@example.com">
+              </div>
+
+              <div class="form-group">
+                <label for="contact-event">Event Type *</label>
+                <select id="contact-event">
+                  <option value="wedding">Wedding / Engagement</option>
+                  <option value="baby_shower">Baby Shower</option>
+                  <option value="graduation">Graduation</option>
+                  <option value="other">Other Ceremony</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-message">Inquiry Details *</label>
+                <textarea id="contact-message" rows="5" required placeholder="Include estimated quantities, colors, themes, or fragrance preferences..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; border:none; padding:14px; font-weight:600; cursor:pointer;">Submit Inquiry</button>
+            </form>
+          </div>
+
+          <!-- Info Details Panel -->
+          <div class="contact-info-panel reveal">
+            <h3>Coordinates</h3>
+            
+            <div class="contact-card-item">
+              <div class="icon">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div>
+                <h4>USA Support Hotline</h4>
+                <p>+1 (504) 777-8801</p>
+                <p style="font-size:0.75rem; color:var(--text-light);">Available 9:00 AM - 6:00 PM EST</p>
+              </div>
+            </div>
+
+            <div class="contact-card-item">
+              <div class="icon">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div>
+                <h4>Jordan Support Hotline</h4>
+                <p>+962 79 668 5110</p>
+                <p style="font-size:0.75rem; color:var(--text-light);">Available 9:00 AM - 8:00 PM EET</p>
+              </div>
+            </div>
+
+            <div class="contact-card-item">
+              <div class="icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </div>
+              <div>
+                <h4>Direct Email Support</h4>
+                <p>prettymoments24@gmail.com</p>
+                <p style="font-size:0.75rem; color:var(--text-light);">Response within 24 business hours</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (Injected via JS) -->
+  <div id="global-footer-placeholder"></div>
+
+  <!-- Script files -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  
+</body>
+</html>

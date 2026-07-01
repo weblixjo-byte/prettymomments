@@ -3,12 +3,7 @@
    ========================================================================== */
 
 // Default Fallback Products
-const DEFAULT_PRODUCTS = [
-  { id: 1, name: 'Elegant Scented Candles', price: 1.50, minQty: 50, img: 'images/wedding_favors.png', category: 'wedding', description: 'Premium gold foil labeled candles finished with dried white flowers and gold-rimmed jars.', is_active: true, seo_title: 'Elegant Scented Candles | Pretty Moments', seo_description: 'Premium wedding and engagement candle favors with custom labels.', seo_keywords: 'candles, wedding favors, custom favors' },
-  { id: 2, name: 'Teal Floral Gift Boxes', price: 2.00, minQty: 30, img: 'images/baby_shower.png', category: 'baby', description: 'Delightful boxes decorated with silk ribbons and miniature daisies, perfect for baby celebrations.', is_active: true, seo_title: 'Teal Floral Gift Boxes | Pretty Moments', seo_description: 'Cute pastel baby shower gift box giveaways.', seo_keywords: 'baby shower, gift box, giveaways' },
-  { id: 3, name: 'Diploma Favor Packages', price: 2.50, minQty: 40, img: 'images/graduation_favors.png', category: 'graduation', description: 'Sophisticated black and gold themed giveaway packs complete with a custom graduation scroll and chocolate.', is_active: true, seo_title: 'Diploma Favor Packages | Pretty Moments', seo_description: 'Custom graduation giveaway card packages with scrolls.', seo_keywords: 'graduation, diploma, giveaways' },
-  { id: 4, name: 'Handmade Lavender Bars', price: 1.80, minQty: 50, img: 'images/soaps_favors.png', category: 'soaps', description: 'Organic lavender-infused soaps wrapped in parchment paper and tied with a rustic jute string.', is_active: true, seo_title: 'Handmade Lavender Bars | Pretty Moments', seo_description: 'Artisanal lavender organic soap favors for events.', seo_keywords: 'organic soaps, lavender favors, rustic favors' }
-];
+const DEFAULT_PRODUCTS = [];
 
 // Active Products Mapping (populated dynamically from database)
 let PRODUCTS = {};
@@ -21,11 +16,44 @@ let cart = [];
 let supabaseClient = null;
 let isOnlineMode = false;
 
+if (typeof supabase !== 'undefined' && typeof CONFIG !== 'undefined' && CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
+  supabaseClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  isOnlineMode = true;
+}
+
 // Active Order Information
 let currentOrderRef = '';
 let currentPaymentMethod = '';
 
-document.addEventListener('DOMContentLoaded', () => {
+async function injectGlobalHeader() {
+  const placeholder = document.getElementById('global-header-placeholder');
+  if (!placeholder) return;
+
+  try {
+    const response = await fetch('header.html');
+    const html = await response.text();
+    placeholder.outerHTML = html;
+  } catch (err) {
+    console.error('Error loading header:', err);
+  }
+}
+
+async function injectGlobalFooter() {
+  const placeholder = document.getElementById('global-footer-placeholder');
+  if (!placeholder) return;
+
+  try {
+    const response = await fetch('footer.html');
+    const html = await response.text();
+    placeholder.outerHTML = html;
+  } catch (err) {
+    console.error('Error loading footer:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await injectGlobalHeader();
+  await injectGlobalFooter();
   initNavbar();
   initFloatingShapes();
   initCollectionsFilter();
@@ -42,6 +70,17 @@ function initNavbar() {
   const header = document.getElementById('site-header');
   const menuToggle = document.querySelector('.menu-toggle');
   const mainNav = document.getElementById('main-nav');
+  
+  // Rebind the cart toggle button after injection
+  const globalCartBtn = document.getElementById('global-cart-btn');
+  if (globalCartBtn) {
+    globalCartBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleCart();
+    });
+  }
+
+  if(!header) return;
 
   // Add scroll listener to add .scrolled class
   window.addEventListener('scroll', () => {
@@ -71,16 +110,61 @@ function initNavbar() {
       });
     });
   }
+
+  // --- Active Nav Link Indicator ---
+  const currentPath = window.location.pathname;
+  const navLinksList = document.querySelectorAll('#main-nav a');
+
+  function removeAllActive() {
+    navLinksList.forEach(l => l.classList.remove('active'));
+  }
+
+  function highlightNavigation() {
+    removeAllActive();
+    
+    const isAbout = currentPath.includes('about');
+    const isShop = currentPath.includes('shop');
+    const isGallery = currentPath.includes('gallery');
+    const isContact = currentPath.includes('contact');
+
+    let activeLink = null;
+    if (isAbout) {
+      activeLink = Array.from(navLinksList).find(l => l.getAttribute('href') === 'about');
+    } else if (isShop) {
+      activeLink = Array.from(navLinksList).find(l => l.getAttribute('href') === 'shop');
+    } else if (isGallery) {
+      activeLink = Array.from(navLinksList).find(l => l.getAttribute('href') === 'gallery');
+    } else if (isContact) {
+      activeLink = Array.from(navLinksList).find(l => l.getAttribute('href') === 'contact');
+    } else {
+      activeLink = Array.from(navLinksList).find(l => l.getAttribute('href') === './' || l.getAttribute('href') === './index.html');
+    }
+
+    if (activeLink) activeLink.classList.add('active');
+  }
+
+  highlightNavigation(); // Run on initialization
+
+  // --- Intersection Observer for Reveal Animations ---
+  window.revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  });
+
+  const revealElements = document.querySelectorAll('.reveal');
+  revealElements.forEach(el => window.revealObserver.observe(el));
 }
 
 /* 1. Database Connection & Catalog Rendering */
 async function initDatabase() {
-  // Check if Supabase keys are configured in config.js
-  if (typeof supabase !== 'undefined' && CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
-    supabaseClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-    isOnlineMode = true;
-  }
-
   // Load categories and products
   await loadStoreCategories();
   renderStoreCategories();
@@ -231,7 +315,7 @@ function renderCatalogGrid() {
     else if (p.category === 'soaps') catTitle = 'Artisan Soaps';
 
     html += `
-      <div class="collection-card" data-category="${p.category}">
+      <div class="collection-card reveal reveal-delay-1" data-category="${p.category}">
         <div class="collection-img-box">
           <img src="${p.img}" alt="${escapeHtml(p.name)}">
           <div class="collection-overlay">
@@ -270,6 +354,12 @@ function renderCatalogGrid() {
   const activeTab = document.querySelector('.tab-btn.active');
   if (activeTab) {
     activeTab.click();
+  }
+
+  // Observe newly added products
+  if (window.revealObserver) {
+    const newReveals = container.querySelectorAll('.reveal');
+    newReveals.forEach(el => window.revealObserver.observe(el));
   }
 }
 
@@ -438,7 +528,7 @@ function initCartDrawer() {
       const address = document.getElementById('cust-address').value.trim();
       const methodVal = document.querySelector('input[name="payment-method"]:checked').value;
       
-      currentPaymentMethod = methodVal === 'cod' ? 'Cash on Delivery' : 'Online Payment';
+      currentPaymentMethod = methodVal === 'invoice' ? 'Custom Invoice / Bank Transfer' : 'Online Payment';
       currentOrderRef = 'PM-' + Math.floor(10000 + Math.random() * 90000); // e.g. PM-82910
 
       const subtotal = getCartTotal();
@@ -752,9 +842,9 @@ function submitToWhatsApp() {
   
   const businessPhone = '15047778801';
 
-  let text = `✨ *PRETTY MOMENTS - NEW ORDER* ✨\n`;
+  let text = `✨ *PRETTY MOMENTS - DESIGN INQUIRY* ✨\n`;
   text += `----------------------------------\n`;
-  text += `Hello Pretty Moments! 🌸\nI would like to place a custom order inquiry:\n\n`;
+  text += `Hello Pretty Moments! 🌸\nI would like to request a custom quote for the following:\n\n`;
   text += `🆔 *Order Reference:* \`${currentOrderRef}\`\n`;
   text += `💳 *Payment Method:* ${currentPaymentMethod}\n\n`;
   
@@ -786,8 +876,94 @@ function submitToWhatsApp() {
   cart = [];
   updateCartBadge();
   renderCart();
-  document.getElementById('checkout-info-form').reset();
+  document.getElementById('checkout-overlay').style.display = 'none';
 }
+
+/* ==========================================================================
+   Gallery Management System
+   ========================================================================== */
+const DEFAULT_GALLERY = [];
+
+async function fetchGalleryItems() {
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
+      if (!error && data) return data;
+    } catch (e) {
+      console.warn("Supabase gallery error, falling back to local:", e);
+    }
+  }
+  
+  let localData = localStorage.getItem('pretty_moments_gallery');
+  if (!localData) {
+    localStorage.setItem('pretty_moments_gallery', JSON.stringify(DEFAULT_GALLERY));
+    return DEFAULT_GALLERY;
+  }
+  return JSON.parse(localData);
+}
+
+function createGalleryHTML(item, index) {
+  const isTall = item.isTall ? 'tall' : '';
+  const delayClass = `reveal-delay-${(index % 3) + 1}`;
+  
+  let mediaHtml = '';
+  if (item.type === 'video') {
+    mediaHtml = `<video src="${item.url}" autoplay muted loop playsinline></video>`;
+  } else {
+    mediaHtml = `<img src="${item.url}" alt="${item.title}">`;
+  }
+
+  return `
+    <div class="gallery-item reveal ${isTall} ${delayClass}" data-id="${item.id}">
+      ${mediaHtml}
+      <div class="gallery-overlay">
+        <h4>${item.title}</h4>
+        <p>${item.description}</p>
+      </div>
+    </div>
+  `;
+}
+
+window.initDynamicGallery = async function() {
+  const grid = document.getElementById('dynamic-gallery-grid');
+  if (!grid) return;
+  
+  const items = await fetchGalleryItems();
+  
+  let isHome = document.body.classList.contains('home-page') || window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '';
+  
+  let itemsToRender = items;
+  if (isHome) {
+    // Only show latest 2 items on home page
+    itemsToRender = items.slice(0, 2);
+    // Force CSS to show 2 items nicely on desktop instead of 4 columns
+    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+  } else {
+    // On gallery page, make sure columns are 4
+    grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+  }
+  
+  let html = '';
+  itemsToRender.forEach((item, idx) => {
+    html += createGalleryHTML(item, idx);
+  });
+  
+  grid.innerHTML = html;
+  
+  if (window.revealObserver) {
+    const newReveals = grid.querySelectorAll('.reveal');
+    newReveals.forEach(el => window.revealObserver.observe(el));
+  }
+};
+
+// Also init gallery when DOM is ready in app.js for index.html
+document.addEventListener('DOMContentLoaded', () => {
+  if(document.getElementById('dynamic-gallery-grid')){
+    if(typeof window.initDynamicGallery === 'function') {
+      window.initDynamicGallery();
+    }
+  }
+});
 
 /* 7. Gallery Lightbox Modal */
 function initGalleryLightbox() {

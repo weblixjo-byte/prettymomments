@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <!-- SEO Meta Tags & Canonical -->
+  <title>Portfolio Gallery | Pretty Moments Store</title>
+  <meta name="description" content="Explore our luxurious portfolio of bespoke favors, custom giveaways, and handmade artisan gifts for weddings, baby showers, and graduations.">
+  <link rel="canonical" href="https://weblix-jo.com/bio/prettymoments/gallery">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://weblix-jo.com/bio/prettymoments/gallery">
+  <meta property="og:title" content="Portfolio Gallery | Pretty Moments Store">
+  <meta property="og:description" content="Explore our luxurious portfolio of bespoke favors and giveaways.">
+  <meta property="og:image" content="https://weblix-jo.com/bio/prettymoments/images/logo.jpg">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portfolio Gallery | Pretty Moments Store">
+  <meta name="twitter:description" content="Explore our luxurious portfolio of bespoke favors and giveaways.">
+  <meta name="twitter:image" content="https://weblix-jo.com/bio/prettymoments/images/logo.jpg">
+
+  <!-- ImageGallery Schema JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "name": "Pretty Moments Portfolio Gallery",
+    "description": "A collection of our finest bespoke favors, weddings giveaways, and artisan gifts.",
+    "publisher": {
+      "@type": "LocalBusiness",
+      "name": "Pretty Moments"
+    }
+  }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background-color: var(--bg-color);">
+
+  <!-- HEADER / NAVIGATION (Injected via JS) -->
+  <div id="global-header-placeholder"></div>
+
+  <main style="padding-top: 120px;">
+    <!-- PHOTO GALLERY / PORTFOLIO -->
+    <section id="gallery" class="section-padding">
+      <div class="container">
+        
+        <div class="section-header reveal">
+          <span class="tagline">Our Portfolio</span>
+          <h2>Pretty Moments <span>Gallery</span></h2>
+          <p style="max-width: 600px; margin: 0 auto;">Discover our past creations. From elegant wedding setups to bespoke baby shower tags, every piece is handcrafted with unconditional love.</p>
+        </div>
+
+        <div id="dynamic-gallery-grid" class="gallery-grid" style="margin-top: 40px;">
+          <!-- Gallery items will be injected here via JS -->
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (Injected via JS) -->
+  <div id="global-footer-placeholder"></div>
+
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize dynamic gallery rendering
+      if(typeof initDynamicGallery === 'function'){
+        initDynamicGallery();
+      }
+    });
+  </script>
+</body>
+</html>

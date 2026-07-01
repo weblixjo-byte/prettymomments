@@ -1,20 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- SEO Meta Tags -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <!-- SEO Meta Tags & Canonical -->
   <title>Pretty Moments | Premium Favors & Giveaways Store</title>
-  <meta name="description" content="Order luxury custom favors & giveaways online. Select items, add to cart, and checkout instantly via WhatsApp. Custom candles, baby shower gift boxes, and handmade soaps in Jordan & USA.">
-  <meta name="keywords" content="giveaways, favors, custom favors, wedding favors, baby shower giveaways, graduation favors, personalized gifts, custom tags, Jordan, USA, WhatsApp store">
+  <meta name="description" content="Order luxury custom favors & giveaways online in Louisiana, USA & Jordan. Select items, add to cart, and checkout instantly via WhatsApp. Custom candles, baby shower gift boxes, and handmade soaps.">
+  <meta name="keywords" content="giveaways, favors, custom favors, wedding favors, baby shower giveaways, graduation favors, personalized gifts, custom tags, Louisiana, New Orleans, Jordan, USA, WhatsApp store">
+  <link rel="canonical" href="https://weblix-jo.com/bio/prettymoments/">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://weblix-jo.com/bio/prettymoments">
+  <meta property="og:url" content="https://weblix-jo.com/bio/prettymoments/">
   <meta property="og:title" content="Pretty Moments | Premium Favors & Giveaways Store">
-  <meta property="og:description" content="Order luxury custom favors & giveaways online. Select items, add to cart, and checkout instantly via WhatsApp. 🌸✨">
-  <meta property="og:image" content="images/logo.jpg">
+  <meta property="og:description" content="Order luxury custom favors & giveaways online in Louisiana & Nationwide. Select items, add to cart, and checkout instantly via WhatsApp. 🌸✨">
+  <meta property="og:image" content="https://weblix-jo.com/bio/prettymoments/images/logo.jpg">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pretty Moments | Premium Favors & Giveaways Store">
+  <meta name="twitter:description" content="Order luxury custom favors & giveaways online in Louisiana & Nationwide.">
+  <meta name="twitter:image" content="https://weblix-jo.com/bio/prettymoments/images/logo.jpg">
+
+  <!-- LocalBusiness Schema JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Pretty Moments",
+    "image": "https://weblix-jo.com/bio/prettymoments/images/logo.jpg",
+    "description": "Premium Favors & Giveaways Store offering custom candles, boxes, and handmade soaps in Louisiana and nationwide.",
+    "telephone": "+15047778801",
+    "areaServed": [
+      { "@type": "State", "name": "Louisiana" },
+      { "@type": "Country", "name": "USA" },
+      { "@type": "Country", "name": "Jordan" }
+    ],
+    "priceRange": "$$"
+  }
+  </script>
 
   <!-- Google Fonts Connection -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,46 +53,8 @@
 </head>
 <body>
 
-  <!-- HEADER / NAVIGATION -->
-  <header id="site-header">
-    <div class="container nav-wrapper">
-      <a href="#home" class="logo-wrapper" id="nav-logo">
-        <div class="logo-circle">
-          <img src="images/logo.jpg" alt="Pretty Moments Logo">
-        </div>
-        <div class="logo-text">
-          <span class="logo-title-pretty">PRETTY</span>
-          <span class="logo-title-moments">moments</span>
-        </div>
-      </a>
-      
-      <!-- Mobile hamburger toggle -->
-      <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-
-      <nav id="main-nav">
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="shop.html">Shop Products</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li>
-            <a href="#" class="nav-cta">
-              Cart 
-              <span class="cart-count" style="display:none; background:var(--text-dark); color:var(--white); border-radius:50%; width:18px; height:18px; font-size:0.68rem; align-items:center; justify-content:center; margin-left:6px; border:1px solid var(--white);">0</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <!-- HEADER / NAVIGATION (Injected via JS) -->
+  <div id="global-header-placeholder"></div>
 
   <!-- MAIN CONTENT AREA -->
   <main>
@@ -73,7 +63,7 @@
     <section id="home" class="hero">
       <div class="container hero-grid">
         
-        <div class="hero-content">
+        <div class="hero-content reveal">
           <span class="hero-subtitle">Bespoke Souvenirs</span>
           <h1 class="hero-title">
             Your Premium
@@ -91,9 +81,13 @@
             </a>
             <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
           </div>
+          <div class="hero-trust-banner" style="margin-top: 16px; font-size: 0.85rem; color: var(--text-taupe); display: flex; align-items: center; gap: 8px;">
+            <span style="color: #f5b041;">★★★★★</span>
+            <span>5.0 Rated | Shipping Locally in Louisiana & Nationwide</span>
+          </div>
         </div>
 
-        <div class="hero-visual">
+        <div class="hero-visual reveal reveal-delay-2">
           <div class="hero-img-container">
             <img src="images/hero_bg.png" alt="Elegantly arranged wedding favors on table setting">
           </div>
@@ -111,7 +105,7 @@
       <div class="container">
         <div class="features-grid">
           
-          <div class="feature-card">
+          <div class="feature-card reveal">
             <div class="feature-icon-box">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -121,7 +115,7 @@
             <p>We source only high-quality wax, organic soaps, luxury packaging, and crystal-clear acrylics to ensure each favor looks and feels premium.</p>
           </div>
 
-          <div class="feature-card">
+          <div class="feature-card reveal reveal-delay-1">
             <div class="feature-icon-box">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -131,7 +125,7 @@
             <p>Every piece is customized, hand-wrapped, and decorated with delicate details such as dried flowers and custom tags customized to your theme.</p>
           </div>
 
-          <div class="feature-card">
+          <div class="feature-card reveal reveal-delay-2">
             <div class="feature-icon-box">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -166,31 +160,7 @@
           <p>
             At Pretty Moments, we believe that life's biggest milestones deserve to be celebrated in style. That is why we specialize in creating custom favors, giveaways, and accessories that capture the essence of your special day.
           </p>
-          <p>
-            Whether you are walking down the aisle, celebrating a new bundle of joy, celebrating academic achievements, or launching a brand, our team works closely with you to curate designs that match your event's theme, colors, and personality.
-          </p>
-          
-          <div class="about-highlights">
-            <div class="about-highlight-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <h4>100% Customized</h4>
-                <p>Pick colors, fragrances, shapes, and custom tags.</p>
-              </div>
-            </div>
-            
-            <div class="about-highlight-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <h4>Bilingual Service</h4>
-                <p>Active support teams ready in Jordan and the US.</p>
-              </div>
-            </div>
-          </div>
+          <a href="about" class="btn btn-secondary" style="margin-top: 20px; display: inline-block;">Read Our Full Story</a>
         </div>
 
       </div>
@@ -211,7 +181,7 @@
         </div>
 
         <div style="text-align:center; margin-top:48px;">
-          <a href="shop.html" class="btn btn-primary">
+          <a href="shop" class="btn btn-primary">
             View All Products
             <svg class="btn-icon" viewBox="0 0 24 24">
               <polyline points="9 18 15 12 9 6"></polyline>
@@ -223,7 +193,7 @@
     </section>
 
     <!-- 5. HOW IT WORKS SECTION -->
-    <section id="how-it-works" class="section-padding" style="background-color: var(--bg-color); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft);">
+    <section id="how-it-works" class="section-padding bg-brown" style="border-top:1px solid rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.05);">
       <div class="container">
         
         <div class="section-header">
@@ -282,56 +252,12 @@
           <h2>Pretty Moments <span>Gallery</span></h2>
         </div>
 
-        <div class="gallery-grid">
-          
-          <div class="gallery-item tall">
-            <img src="images/hero_bg.png" alt="Custom wedding giveaways set up on dinner table">
-            <div class="gallery-overlay">
-              <h4>Reception Table Settings</h4>
-              <p>Wedding Day Souvenirs</p>
-            </div>
-          </div>
+        <div id="dynamic-gallery-grid" class="gallery-grid">
+          <!-- Latest 2 gallery items injected here -->
+        </div>
 
-          <div class="gallery-item">
-            <img src="images/wedding_favors.png" alt="Scented candle wedding favors close up">
-            <div class="gallery-overlay">
-              <h4>Luxury Gold Candle Jars</h4>
-              <p>Engagement giveaways</p>
-            </div>
-          </div>
-
-          <div class="gallery-item">
-            <img src="images/baby_shower.png" alt="Baby shower pastel blue and pink boxes">
-            <div class="gallery-overlay">
-              <h4>Pastel Baby Boxes</h4>
-              <p>Baby Shower favors</p>
-            </div>
-          </div>
-
-          <div class="gallery-item tall">
-            <img src="images/soaps_favors.png" alt="Handmade rustic soaps wrapped in paper and twine">
-            <div class="gallery-overlay">
-              <h4>Handcrafted Organic Soaps</h4>
-              <p>Bridal Shower rustic theme</p>
-            </div>
-          </div>
-
-          <div class="gallery-item">
-            <img src="images/graduation_favors.png" alt="Graduation diploma scroll boxes">
-            <div class="gallery-overlay">
-              <h4>Graduation Chocolate boxes</h4>
-              <p>Academic Celebration giveaways</p>
-            </div>
-          </div>
-
-          <div class="gallery-item">
-            <img src="images/hero_bg.png" alt="Beautifully gift-wrapped candles with ribbons">
-            <div class="gallery-overlay">
-              <h4>Custom Ribbon Gift Boxes</h4>
-              <p>Anniversary & Special Events</p>
-            </div>
-          </div>
-
+        <div style="text-align: center; margin-top: 50px;" class="reveal">
+          <a href="gallery" class="btn btn-primary" style="padding: 16px 40px; font-size: 1.1rem;">View Full Gallery</a>
         </div>
 
       </div>
@@ -406,123 +332,15 @@
       </div>
     </section>
 
-    <!-- 8. CONTACT & FORM SECTION -->
-    <section id="contact" class="section-padding" style="background-color: var(--bg-color);">
-      <div class="container contact-grid">
-        
-        <!-- Contact Info column -->
-        <div class="contact-info-area">
-          <div class="section-header" style="text-align: left; margin-bottom: 40px;">
-            <span class="tagline" style="margin-left: 0;">Get In Touch</span>
-            <h2 style="font-size: 2.2rem;">Contact <span>Our Sales Team</span></h2>
-            <p style="margin-top: 15px; font-size: 0.92rem; text-align: left;">We operate globally with dedicated contacts in Jordan and the United States. Message us directly or fill in the form, and we will get back to you shortly.</p>
-          </div>
-
-          <div class="contact-info-cards">
-            
-            <!-- Jordan Card -->
-            <div class="contact-card">
-              <div class="contact-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
-              </div>
-              <div class="contact-card-details">
-                <h4>Jordan Office</h4>
-                <p>Call or WhatsApp our Jordan coordination center for orders within Middle East.</p>
-                <div class="contact-links-group">
-                  <a href="tel:+962796685110" class="contact-mini-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    Call (+962)
-                  </a>
-                  <a href="https://wa.me/15047778801?text=Hello%20Pretty%20Moments%2C%20I%20am%20inquiring%20from%20Jordan" target="_blank" class="contact-mini-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                    </svg>
-                    WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <!-- USA Card -->
-            <div class="contact-card">
-              <div class="contact-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
-              </div>
-              <div class="contact-card-details">
-                <h4>USA Office</h4>
-                <p>Call or text our North America team for local custom requests and logistics.</p>
-                <div class="contact-links-group">
-                  <a href="tel:+15047778801" class="contact-mini-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    Call (+1)
-                  </a>
-                  <a href="https://wa.me/15047778801?text=Hello%20Pretty%20Moments%2C%20I%20am%20inquiring%20from%20USA" target="_blank" class="contact-mini-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                    </svg>
-                    WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Form Column -->
-        <div class="contact-form-container">
-          
-          <!-- Success alert -->
-          <div class="form-alert success" id="form-success-alert">
-            <strong>Thank you!</strong> Your inquiry has been sent successfully. Our team will contact you very soon.
-          </div>
-
-          <form id="contact-form" autocomplete="on">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="contact-name">Your Name *</label>
-                <input type="text" id="contact-name" name="name" required placeholder="e.g. Leila Haddad">
-              </div>
-              <div class="form-group">
-                <label for="contact-email">Email Address *</label>
-                <input type="email" id="contact-email" name="email" required placeholder="name@domain.com">
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="contact-phone">Phone Number *</label>
-                <input type="tel" id="contact-phone" name="phone" required placeholder="e.g. +962 79 123 4567">
-              </div>
-              <div class="form-group">
-                <label for="contact-event">Celebration Type</label>
-                <select id="contact-event" name="event-type">
-                  <option value="wedding">Wedding & Engagement</option>
-                  <option value="baby-shower">Baby Shower</option>
-                  <option value="graduation">Graduation</option>
-                  <option value="birthday">Birthday Party</option>
-                  <option value="other">Other Special Moment</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="contact-message">Your Ideas & Details</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Tell us about your estimated quantity, colors, tag designs, or any specific concepts you have in mind..."></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary form-submit-btn">Send Inquiry Email</button>
-          </form>
-        </div>
-
+    <!-- 8. CONTACT SECTION (Teaser) -->
+    <section id="contact" class="section-padding" style="background-color: var(--bg-color); text-align: center;">
+      <div class="container" style="max-width: 700px;">
+        <span class="tagline">Get In Touch</span>
+        <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Contact <span>Our Design Team</span></h2>
+        <p style="color: var(--text-taupe); line-height: 1.8; margin-bottom: 30px;">
+          Ready to customize giveaways for your special day? We are here to bring your concepts to life. Get in touch to schedule a custom consultation or discuss options.
+        </p>
+        <a href="contact" class="btn btn-primary" style="display: inline-block; padding: 14px 40px; text-decoration: none;">Send Us An Inquiry</a>
       </div>
     </section>
 
@@ -566,7 +384,7 @@
       </div>
       <div class="cart-summary-row">
         <span>Delivery / Shipping</span>
-        <span style="font-style: italic; color: var(--text-light); font-size: 0.8rem;">Calculated in Chat</span>
+        <span style="font-style: italic; color: var(--text-light); font-size: 0.8rem; max-width: 150px; text-align: right;">Standard US Shipping: Starting at $15 (Exact quote provided in chat).</span>
       </div>
       <div class="cart-summary-row total">
         <span>Total</span>
@@ -591,7 +409,7 @@
             <label>Payment Method *</label>
             <div style="display:flex; gap:16px; margin-top:6px; font-size:0.9rem;">
               <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
-                <input type="radio" name="payment-method" value="cod" checked style="width:auto; accent-color:var(--primary-gold);"> Cash on Delivery
+                <input type="radio" name="payment-method" value="invoice" checked style="width:auto; accent-color:var(--primary-gold);"> Custom Invoice
               </label>
               <label style="display:flex; align-items:center; gap:6px; font-weight:normal; cursor:pointer;">
                 <input type="radio" name="payment-method" value="online" style="width:auto; accent-color:var(--primary-gold);"> Online Payment
@@ -599,7 +417,7 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+        <button type="submit" class="checkout-btn">Request Custom Quote</button>
       </form>
     </div>
   </div>
@@ -668,7 +486,7 @@
         </div>
         <div class="invoice-financial-row">
           <span>Delivery & Shipping:</span>
-          <span style="font-style: italic; color:var(--text-light);">Calculated in Chat</span>
+          <span style="font-style: italic; color:var(--text-light); font-size: 0.8rem;">Starting at $15 (Calculated in Chat)</span>
         </div>
         <div class="invoice-financial-row grand">
           <span>Grand Total:</span>
@@ -678,14 +496,11 @@
 
       <!-- Checkout triggers -->
       <div class="invoice-actions">
-        <button type="button" class="btn btn-secondary invoice-action-btn invoice-action-print" id="print-invoice-btn">
-          Print Receipt
-        </button>
         <button type="button" class="btn invoice-action-btn invoice-action-whatsapp" id="whatsapp-checkout-btn">
           <svg viewBox="0 0 448 512" fill="currentColor">
             <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
           </svg>
-          Send WhatsApp Order
+          Send WhatsApp Inquiry
         </button>
       </div>
     </div>
@@ -704,91 +519,8 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      
-      <div class="footer-grid">
-        
-        <div class="footer-brand">
-          <a href="#home" class="footer-logo" style="text-decoration: none;">
-            <div class="footer-logo-circle">
-              <img src="images/logo.jpg" alt="Pretty Moments circular footer logo">
-            </div>
-            <div class="footer-logo-text">
-              <span class="footer-logo-pretty">PRETTY</span>
-              <span class="footer-logo-moments">moments</span>
-            </div>
-          </a>
-          <p>Handcrafting giveaways & custom favors with unconditional love since 2024. Providing beautiful keepsakes for special ceremonies globally.</p>
-          
-          <div class="footer-socials">
-            <a href="https://www.instagram.com/prettymoments24?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="footer-social-btn" aria-label="Visit Instagram Profile">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-            </a>
-            <a href="https://www.tiktok.com/@prettymoments24?_r=1&_t=ZT-97ME6x1XM2H" target="_blank" class="footer-social-btn" aria-label="Visit TikTok Channel">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-              </svg>
-            </a>
-            <a href="https://www.facebook.com/share/1H92s1cAEb/?mibextid=wwXIfr" target="_blank" class="footer-social-btn" aria-label="Visit Facebook Page">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="footer-links-col">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About Our Philosophy</a></li>
-            <li><a href="#collections">Explore Catalog</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#gallery">Product Gallery</a></li>
-            <li><a href="#contact">Contact Coordinates</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-links-col">
-          <h4>Coordinates</h4>
-          <div class="footer-contact-info">
-            <div class="footer-contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              <span>USA Inquiry: +1 (504) 777-8801</span>
-            </div>
-            <div class="footer-contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              <span>Jordan Inquiry: +962 79 668 5110</span>
-            </div>
-            <div class="footer-contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              <span>Direct: prettymoments24@gmail.com</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2026 Pretty Moments. All rights reserved.</p>
-        <p>Created by <a href="https://weblix-jo.com/en" target="_blank" rel="noopener">weblix-jo</a></p>
-      </div>
-
-    </div>
-  </footer>
+  <!-- FOOTER (Injected via JS) -->
+  <div id="global-footer-placeholder"></div>
 
   <!-- Script files -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

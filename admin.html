@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <!-- SEO Meta Tags & Canonical -->
   <title>Pretty Moments | Admin Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://weblix-jo.com/bio/prettymoments/admin">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +20,9 @@
   <!-- Supabase Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
+
+  <!-- SweetAlert2 Library for beautiful alerts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Chart.js Library for Sales Graphics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,6 +39,49 @@
       --white: #ffffff;
       --font-sans: 'Outfit', sans-serif;
       --font-serif: 'Playfair Display', serif;
+    }
+
+    /* Custom SweetAlert2 Styling */
+    .swal2-popup {
+      font-family: var(--font-sans) !important;
+      border-radius: 24px !important;
+      border: 1px solid var(--border-soft) !important;
+      background-color: var(--bg-color) !important;
+    }
+    .swal2-title {
+      font-family: var(--font-serif) !important;
+      color: var(--text-dark) !important;
+      font-weight: 600 !important;
+    }
+    .swal2-html-container {
+      color: var(--text-taupe) !important;
+      font-size: 0.95rem !important;
+    }
+    .swal2-confirm.swal2-styled {
+      background-color: var(--primary-gold) !important;
+      border-radius: 12px !important;
+      padding: 12px 24px !important;
+      font-size: 0.95rem !important;
+      box-shadow: none !important;
+    }
+    .swal2-cancel.swal2-styled {
+      background-color: var(--text-light) !important;
+      border-radius: 12px !important;
+      padding: 12px 24px !important;
+      font-size: 0.95rem !important;
+      box-shadow: none !important;
+    }
+    .swal2-input {
+      border-radius: 12px !important;
+      border: 1px solid var(--border-soft) !important;
+      font-family: var(--font-sans) !important;
+      font-size: 1rem !important;
+      color: var(--text-dark) !important;
+      background-color: var(--white) !important;
+    }
+    .swal2-input:focus {
+      border-color: var(--primary-gold) !important;
+      box-shadow: 0 0 0 3px rgba(213, 161, 83, 0.08) !important;
     }
 
     * {
@@ -89,11 +142,16 @@
       padding: 12px;
       border: 1px solid var(--border-soft);
       border-radius: 12px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      background-color: var(--bg-color);
+      box-sizing: border-box;
+    }
+
+    .auth-input.passcode {
       text-align: center;
       font-size: 1.2rem;
       letter-spacing: 4px;
-      margin-bottom: 16px;
-      background-color: var(--bg-color);
     }
 
     .auth-btn {
@@ -663,9 +721,24 @@
   <!-- PASSWORD GATEWAY OVERLAY -->
   <div id="auth-overlay">
     <div class="auth-card">
-      <h2>Admin Sign In</h2>
-      <p>Enter password passcode to access your dashboard</p>
-      <input type="password" class="auth-input" id="passcode-input" placeholder="••••" maxlength="4">
+      <h2 id="auth-title">Admin Sign In</h2>
+      <p id="auth-desc" style="margin-bottom: 20px;">Log in with your Supabase Admin account</p>
+      
+      <div id="login-email-group" style="display: none; text-align: left; margin-bottom: 12px;">
+        <div class="form-group">
+          <label for="login-email" style="font-size:0.8rem; font-weight:600; display:block; margin-bottom:6px; font-family: var(--font-sans);">Email Address</label>
+          <input type="email" class="auth-input" id="login-email" placeholder="admin@prettymoments.com" style="text-align: left; letter-spacing: normal;">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="login-password" style="font-size:0.8rem; font-weight:600; display:block; margin-bottom:6px; font-family: var(--font-sans);">Password</label>
+          <input type="password" class="auth-input" id="login-password" placeholder="••••••••" style="text-align: left; letter-spacing: normal;">
+        </div>
+      </div>
+
+      <div id="login-passcode-group" style="display: none;">
+        <input type="password" class="auth-input passcode" id="passcode-input" placeholder="••••" maxlength="4">
+      </div>
+
       <button class="auth-btn" id="login-btn">Unlock Dashboard</button>
     </div>
   </div>
@@ -684,9 +757,12 @@
         </div>
       </div>
 
-      <div class="connection-mode-badge-style local" id="connection-mode-badge">
-        <div class="dot"></div>
-        <span id="mode-text">Local Mode</span>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="connection-mode-badge-style local" id="connection-mode-badge">
+          <div class="dot"></div>
+          <span id="mode-text">Local Mode</span>
+        </div>
+        <button id="admin-logout-btn" style="background:none; border:1px solid var(--text-taupe); color:var(--text-taupe); padding:8px 16px; border-radius:12px; font-size:0.8rem; cursor:pointer;">Sign Out</button>
       </div>
     </header>
 
@@ -694,6 +770,7 @@
     <div class="dashboard-tabs">
       <button class="tab-trigger active" id="tab-products-btn">Products Catalog</button>
       <button class="tab-trigger" id="tab-analytics-btn">Orders & Sales Analytics</button>
+      <button class="tab-trigger" id="tab-gallery-btn">Gallery Management</button>
     </div>
 
     <!-- PANEL 1: PRODUCTS TAB CONTENT -->
@@ -842,8 +919,10 @@
       </div>
 
       <!-- Search & Orders Table List -->
-      <div class="panel">
-        <h3 class="panel-title" style="border-bottom:none; margin-bottom:16px;">Orders Log</h3>
+        <h3 class="panel-title" style="border-bottom:none; margin-bottom:16px; display: flex; justify-content: space-between; align-items: center;">
+          Orders Log
+          <button class="reset-btn" id="clear-sales-btn" type="button" style="background:none; border:1px solid #ea5455; color:#ea5455; padding:8px 16px; border-radius:12px; font-size:0.8rem; cursor:pointer;">Wipe All Sales & Analytics</button>
+        </h3>
         
         <div class="search-bar-wrapper">
           <input type="text" class="search-input" id="order-search" placeholder="🔍 Verify order: Search by Customer Name, Phone, or Reference (e.g. PM-82910)...">
@@ -870,6 +949,60 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- PANEL 3: GALLERY MANAGEMENT -->
+    <div id="gallery-content-panel" style="display: none;">
+      <div class="dashboard-layout">
+        <div>
+          <div class="panel">
+            <h3 class="panel-title">Add Media to Gallery</h3>
+            <form id="add-gallery-form" onsubmit="return false;">
+              <div class="form-group">
+                <label for="gal-title">Media Title *</label>
+                <input type="text" id="gal-title" required placeholder="e.g. Wedding Setup">
+              </div>
+              <div class="form-group">
+                <label for="gal-desc">Description</label>
+                <textarea id="gal-desc" rows="2" placeholder="e.g. Summer vibes outdoor..."></textarea>
+              </div>
+              <div class="form-group row" style="margin-bottom:0;">
+                <div class="form-group">
+                  <label for="gal-type">Media Type *</label>
+                  <select id="gal-type" required>
+                    <option value="image">Image (Photo)</option>
+                    <option value="video">Video (MP4/WebM)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="gal-layout">Grid Layout *</label>
+                  <select id="gal-layout" required>
+                    <option value="false">Standard (Square/Landscape)</option>
+                    <option value="true">Tall (Portrait/Vertical)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="gal-url">Media URL / Local Path *</label>
+                <input type="text" id="gal-url" required placeholder="e.g. images/my_photo.jpg">
+              </div>
+              <button type="submit" class="form-submit-btn" id="save-gal-btn" style="background-color: var(--primary-teal); color: var(--text-dark);">Add to Gallery</button>
+            </form>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <h3 class="panel-title">
+              Manage Gallery
+              <span style="font-size:0.75rem; font-weight:400; color:var(--text-light);" id="gallery-count">0 items</span>
+            </h3>
+            <div class="product-list" id="gallery-list-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -957,23 +1090,94 @@
 
   <!-- ADMIN CLIENT SCRIPT -->
   <script>
-    // Config Gate passcode (Simple protection on client side)
-    const PASSCODE = '1122'; 
-
-    document.getElementById('login-btn').addEventListener('click', verifyPasscode);
+    // Auth Check & Login Logic
+    document.getElementById('login-btn').addEventListener('click', handleLogin);
+    
+    // Bind enter keys
+    document.getElementById('login-password').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
     document.getElementById('passcode-input').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') verifyPasscode();
+      if (e.key === 'Enter') handleLogin();
     });
 
-    function verifyPasscode() {
-      const input = document.getElementById('passcode-input').value;
-      if (input === PASSCODE) {
-        document.getElementById('auth-overlay').style.display = 'none';
-      } else {
-        alert('Incorrect passcode. Please try again!');
-        document.getElementById('passcode-input').value = '';
+    async function checkAuthSession() {
+      if (!isOnlineMode) {
+        document.getElementById('auth-title').textContent = "Local Mode Unlock";
+        document.getElementById('auth-desc').textContent = "Enter passcode 1122 to unlock local settings";
+        document.getElementById('login-email-group').style.display = 'none';
+        document.getElementById('login-passcode-group').style.display = 'block';
+        return;
+      }
+
+      // Online mode (Supabase)
+      try {
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
+        if (session) {
+          // Already logged in
+          document.getElementById('auth-overlay').style.display = 'none';
+          initDashboardData();
+        } else {
+          // Show email/password form
+          document.getElementById('auth-title').textContent = "Admin Login";
+          document.getElementById('auth-desc').textContent = "Log in with your Supabase Admin account";
+          document.getElementById('login-email-group').style.display = 'block';
+          document.getElementById('login-passcode-group').style.display = 'none';
+        }
+      } catch (err) {
+        console.error("Auth session check error:", err);
       }
     }
+    async function handleLogin() {
+      if (!isOnlineMode) {
+        const passcode = document.getElementById('passcode-input').value;
+        if (passcode === '1122') {
+          document.getElementById('auth-overlay').style.display = 'none';
+          initDashboardData();
+        } else {
+          Swal.fire({ title: 'Error', text: 'Incorrect passcode!', icon: 'error', confirmButtonColor: '#d5a153' });
+        }
+        return;
+      }
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        Swal.fire({ title: 'Warning', text: 'Please fill in both email and password!', icon: 'warning', confirmButtonColor: '#d5a153' });
+        return;
+      }
+
+      const btn = document.getElementById('login-btn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Logging in...';
+      btn.disabled = true;
+
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+        if (error) throw error;
+
+        Swal.fire({ title: 'Success', text: 'Login successful!', icon: 'success', confirmButtonColor: '#d5a153' });
+        document.getElementById('auth-overlay').style.display = 'none';
+        initDashboardData();
+      } catch (err) {
+        Swal.fire({ title: 'Error', text: 'Login failed: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
+      } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // Bind sign out click
+    document.getElementById('admin-logout-btn').addEventListener('click', async () => {
+      if (isOnlineMode) {
+        await supabaseClient.auth.signOut();
+      }
+      window.location.reload();
+    });
 
     // Default Fallback Products
     const DEFAULT_PRODUCTS = [
@@ -1013,23 +1217,40 @@
     // Tab Switching Toggles
     const productsTabBtn = document.getElementById('tab-products-btn');
     const analyticsTabBtn = document.getElementById('tab-analytics-btn');
+    const galleryTabBtn = document.getElementById('tab-gallery-btn');
+
     const productsContent = document.getElementById('products-content-panel');
     const analyticsContent = document.getElementById('analytics-content-panel');
+    const galleryContent = document.getElementById('gallery-content-panel');
+
+    function resetTabs() {
+      productsTabBtn.classList.remove('active');
+      analyticsTabBtn.classList.remove('active');
+      galleryTabBtn.classList.remove('active');
+      productsContent.style.display = 'none';
+      analyticsContent.style.display = 'none';
+      galleryContent.style.display = 'none';
+    }
 
     productsTabBtn.addEventListener('click', () => {
+      resetTabs();
       productsTabBtn.classList.add('active');
-      analyticsTabBtn.classList.remove('active');
       productsContent.style.display = 'grid';
-      analyticsContent.style.display = 'none';
       loadAllProductCatalogData();
     });
 
     analyticsTabBtn.addEventListener('click', () => {
+      resetTabs();
       analyticsTabBtn.classList.add('active');
-      productsTabBtn.classList.remove('active');
-      productsContent.style.display = 'none';
       analyticsContent.style.display = 'block';
       loadAnalytics();
+    });
+
+    galleryTabBtn.addEventListener('click', () => {
+      resetTabs();
+      galleryTabBtn.classList.add('active');
+      galleryContent.style.display = 'block';
+      if(typeof loadAdminGallery === 'function') loadAdminGallery();
     });
 
     // Helper to toggle between Image URL and File upload inputs
@@ -1134,7 +1355,7 @@
       const slug = document.getElementById('cat-slug').value.trim();
 
       if (!name || !slug) {
-        alert('Please fill out all fields.');
+        Swal.fire({ title: 'Warning', text: 'Please fill out all fields.', icon: 'warning', confirmButtonColor: '#d5a153' });
         return;
       }
 
@@ -1142,8 +1363,9 @@
 
       if (isOnlineMode) {
         const { error } = await supabaseClient.from('categories').insert([newCat]);
-        if (error) alert('Error adding category: ' + error.message);
-        else {
+        if (error) {
+          Swal.fire({ title: 'Error', text: 'Error adding category: ' + error.message, icon: 'error', confirmButtonColor: '#d5a153' });
+        } else {
           document.getElementById('cat-name').value = '';
           document.getElementById('cat-slug').value = '';
           loadCategories();
@@ -1160,12 +1382,24 @@
     });
 
     async function deleteCategory(id) {
-      if (!confirm('Are you sure you want to delete this category? Products in this category will remain, but the filter tab will be removed.')) return;
+      const { isConfirmed } = await Swal.fire({
+        title: 'Delete Category',
+        text: 'Are you sure you want to delete this category? Products in this category will remain, but the filter tab will be removed.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        confirmButtonColor: '#ea5455',
+        cancelButtonColor: '#7a756b'
+      });
+      if (!isConfirmed) return;
       
       if (isOnlineMode) {
         const { error } = await supabaseClient.from('categories').delete().eq('id', id);
-        if (error) alert('Error: ' + error.message);
-        else loadCategories();
+        if (error) {
+          Swal.fire({ title: 'Error', text: 'Error deleting category: ' + error.message, icon: 'error', confirmButtonColor: '#d5a153' });
+        } else {
+          loadCategories();
+        }
       } else {
         categoriesList = categoriesList.filter(c => c.id !== id);
         localStorage.setItem('pretty_moments_categories', JSON.stringify(categoriesList));
@@ -1300,11 +1534,12 @@
 
       container.innerHTML = html;
     }
-
     async function toggleProductActive(id, checked) {
       if (isOnlineMode) {
         const { error } = await supabaseClient.from('products').update({ is_active: checked }).eq('id', id);
-        if (error) alert('Error updating database: ' + error.message);
+        if (error) {
+          Swal.fire({ title: 'Error', text: 'Error updating database: ' + error.message, icon: 'error', confirmButtonColor: '#d5a153' });
+        }
       } else {
         const idx = productsList.findIndex(p => p.id === id);
         if (idx !== -1) {
@@ -1315,11 +1550,24 @@
     }
 
     async function deleteProduct(id) {
-      if (!confirm('Delete this product?')) return;
+      const { isConfirmed } = await Swal.fire({
+        title: 'Delete Product',
+        text: 'Are you sure you want to delete this product?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        confirmButtonColor: '#ea5455',
+        cancelButtonColor: '#7a756b'
+      });
+      if (!isConfirmed) return;
+
       if (isOnlineMode) {
         const { error } = await supabaseClient.from('products').delete().eq('id', id);
-        if (error) alert('Error: ' + error.message);
-        else loadProducts();
+        if (error) {
+          Swal.fire({ title: 'Error', text: 'Error deleting product: ' + error.message, icon: 'error', confirmButtonColor: '#d5a153' });
+        } else {
+          loadProducts();
+        }
       } else {
         productsList = productsList.filter(p => p.id !== id);
         saveLocalData();
@@ -1342,7 +1590,7 @@
       try {
         const imgUrl = await getUploadedImageSrc('add');
         if (!imgUrl) {
-          alert('Please select or upload a product image.');
+          Swal.fire({ title: 'Warning', text: 'Please select or upload a product image.', icon: 'warning', confirmButtonColor: '#d5a153' });
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
           return;
@@ -1376,7 +1624,7 @@
           renderProducts();
         }
       } catch (err) {
-        alert('Error saving product: ' + err.message);
+        Swal.fire({ title: 'Error', text: 'Error saving product: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
       } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
@@ -1384,7 +1632,17 @@
     });
 
     document.getElementById('reset-db-btn').addEventListener('click', async () => {
-      if (!confirm('This will wipe all custom products and restore default items. Continue?')) return;
+      const { isConfirmed } = await Swal.fire({
+        title: 'Reset Products',
+        text: 'This will wipe all custom products and restore default items. Continue?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, reset!',
+        confirmButtonColor: '#ea5455',
+        cancelButtonColor: '#7a756b'
+      });
+      if (!isConfirmed) return;
+
       if (isOnlineMode) {
         await supabaseClient.from('products').delete().neq('id', 0);
         const defaultsWithoutId = DEFAULT_PRODUCTS.map(({id, ...rest}) => rest);
@@ -1462,7 +1720,7 @@
           }
         }
       } catch (err) {
-        alert('Error updating: ' + err.message);
+        Swal.fire({ title: 'Error', text: 'Error updating: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
       } finally {
         saveBtn.textContent = originalText;
         saveBtn.disabled = false;
@@ -1474,6 +1732,64 @@
     // -------------------------------------------------------------
     let ordersList = [];
     let salesChartInstance = null;
+
+    document.getElementById('clear-sales-btn').addEventListener('click', async () => {
+      const { value: password } = await Swal.fire({
+        title: 'Enter Admin Password',
+        text: 'Please enter the password to delete all sales data:',
+        input: 'password',
+        inputPlaceholder: '••••••••',
+        showCancelButton: true,
+        confirmButtonText: 'Verify Password',
+        confirmButtonColor: '#ea5455',
+        cancelButtonColor: '#7a756b'
+      });
+
+      if (password === undefined) return; // Prompt cancelled
+
+      if (password !== 'Jamileh2026@') {
+        Swal.fire({ title: 'Incorrect Password', text: 'The password you entered is incorrect.', icon: 'error', confirmButtonColor: '#d5a153' });
+        return;
+      }
+
+      const { isConfirmed } = await Swal.fire({
+        title: 'Are you absolutely sure?',
+        text: 'This will permanently delete ALL sales records and analytics. This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, wipe everything!',
+        confirmButtonColor: '#ea5455',
+        cancelButtonColor: '#7a756b'
+      });
+
+      if (!isConfirmed) return;
+
+      const btn = document.getElementById('clear-sales-btn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Wiping...';
+      btn.disabled = true;
+
+      try {
+        if (isOnlineMode) {
+          const { error } = await supabaseClient.from('orders').delete().neq('id', 0);
+          if (error) throw error;
+        } else {
+          localStorage.removeItem('pretty_moments_orders');
+        }
+
+        Swal.fire({ title: 'Wiped!', text: 'All sales records have been wiped successfully.', icon: 'success', confirmButtonColor: '#d5a153' });
+        ordersList = [];
+        renderAnalyticsKPIs();
+        renderOrdersTable();
+        renderSalesChart();
+      } catch (err) {
+        console.error(err);
+        Swal.fire({ title: 'Error', text: 'Error wiping sales data: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
+      } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
 
     async function loadAnalytics() {
       if (isOnlineMode) {
@@ -1710,7 +2026,148 @@
       await loadProducts();
     }
 
-    loadAllProductCatalogData();
+    function initDashboardData() {
+      loadAllProductCatalogData();
+    }
+
+    checkAuthSession();
+
+    // -------------------------------------------------------------
+    // GALLERY MANAGEMENT LOGIC (NEW)
+    // -------------------------------------------------------------
+    let adminGalleryList = [];
+
+    async function loadAdminGallery() {
+      if (isOnlineMode) {
+        try {
+          const { data, error } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
+          if (error) throw error;
+          adminGalleryList = data || [];
+        } catch (err) {
+          console.error('Error fetching gallery:', err);
+          loadLocalGallery();
+        }
+      } else {
+        loadLocalGallery();
+      }
+      renderAdminGallery();
+    }
+
+    function loadLocalGallery() {
+      let localData = localStorage.getItem('pretty_moments_gallery');
+      if (!localData) {
+        // DEFAULT_GALLERY is in app.js, so if it's not here we just fallback
+        adminGalleryList = [];
+      } else {
+        adminGalleryList = JSON.parse(localData);
+      }
+    }
+
+    function renderAdminGallery() {
+      const container = document.getElementById('gallery-list-container');
+      const countLabel = document.getElementById('gallery-count');
+      container.innerHTML = '';
+      
+      countLabel.textContent = `${adminGalleryList.length} items`;
+
+      if (adminGalleryList.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding: 20px;">No gallery media found.</p>';
+        return;
+      }
+
+      adminGalleryList.forEach(item => {
+        let mediaBadge = item.type === 'video' ? '🎬 Video' : '📸 Image';
+        let layoutBadge = item.isTall ? 'Tall' : 'Standard';
+
+        container.innerHTML += `
+          <div class="product-item">
+            <div class="product-thumbnail">
+              ${item.type === 'video' 
+                ? `<video src="${item.url}" muted style="width:100%; height:100%; object-fit:cover;"></video>` 
+                : `<img src="${item.url}" alt="${escapeHtml(item.title)}">`}
+            </div>
+            <div class="product-details">
+              <div class="product-name">${escapeHtml(item.title)}</div>
+              <div class="product-meta-row">
+                <span>${mediaBadge}</span>
+                <span>•</span>
+                <span>Layout: ${layoutBadge}</span>
+              </div>
+            </div>
+            <button class="action-btn delete" onclick="deleteGalleryItem(${item.id})" aria-label="Delete">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    document.getElementById('add-gallery-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const title = document.getElementById('gal-title').value.trim();
+      const desc = document.getElementById('gal-desc').value.trim();
+      const type = document.getElementById('gal-type').value;
+      const isTall = document.getElementById('gal-layout').value === 'true';
+      const url = document.getElementById('gal-url').value.trim();
+
+      const newItem = {
+        title,
+        description: desc,
+        type,
+        isTall,
+        url,
+        created_at: new Date().toISOString()
+      };
+
+      if (isOnlineMode) {
+        try {
+          const { error } = await supabaseClient.from('gallery').insert([newItem]);
+          if (error) throw error;
+        } catch (err) {
+          console.error(err);
+          Swal.fire({ title: 'Error', text: 'Error saving to DB: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
+          return;
+        }
+      } else {
+        newItem.id = Date.now();
+        adminGalleryList.unshift(newItem); // Add to top
+        localStorage.setItem('pretty_moments_gallery', JSON.stringify(adminGalleryList));
+      }
+
+      Swal.fire({ title: 'Success', text: 'Media added to gallery successfully!', icon: 'success', confirmButtonColor: '#d5a153' });
+      document.getElementById('add-gallery-form').reset();
+      loadAdminGallery();
+    });
+
+    async function deleteGalleryItem(id) {
+      const { isConfirmed } = await Swal.fire({
+        title: 'Delete Media',
+        text: 'Are you sure you want to delete this gallery media?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        confirmButtonColor: '#ea5455',
+        cancelButtonColor: '#7a756b'
+      });
+      if (!isConfirmed) return;
+
+      if (isOnlineMode) {
+        try {
+          const { error } = await supabaseClient.from('gallery').delete().eq('id', id);
+          if (error) throw error;
+        } catch (err) {
+          console.error(err);
+          Swal.fire({ title: 'Error', text: 'Error deleting from DB: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
+          return;
+        }
+      } else {
+        adminGalleryList = adminGalleryList.filter(i => i.id !== id);
+        localStorage.setItem('pretty_moments_gallery', JSON.stringify(adminGalleryList));
+      }
+      
+      loadAdminGallery();
+    }
   </script>
 
 </body>
