@@ -2099,12 +2099,24 @@
         let mediaBadge = item.type === 'video' ? '🎬 Video' : '📸 Image';
         let layoutBadge = item.isTall ? 'Tall' : 'Standard';
 
+        let previewMedia = '';
+        if (item.type === 'video') {
+          if (item.url.includes('instagram.com')) {
+            let embedUrl = item.url.split('?')[0];
+            if (!embedUrl.endsWith('/')) embedUrl += '/';
+            if (!embedUrl.endsWith('embed/')) embedUrl += 'embed/';
+            previewMedia = `<iframe src="${embedUrl}" frameborder="0" scrolling="no" style="width:100%; height:100%; border:none;"></iframe>`;
+          } else {
+            previewMedia = `<video src="${item.url}" muted style="width:100%; height:100%; object-fit:cover;"></video>`;
+          }
+        } else {
+          previewMedia = `<img src="${item.url}" alt="${escapeHtml(item.title)}">`;
+        }
+
         container.innerHTML += `
           <div class="product-item">
             <div class="product-thumbnail">
-              ${item.type === 'video' 
-                ? `<video src="${item.url}" muted style="width:100%; height:100%; object-fit:cover;"></video>` 
-                : `<img src="${item.url}" alt="${escapeHtml(item.title)}">`}
+              ${previewMedia}
             </div>
             <div class="product-details">
               <div class="product-name">${escapeHtml(item.title)}</div>

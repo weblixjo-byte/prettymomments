@@ -1611,10 +1611,11 @@ nav a.active::after {
   grid-row: span 2;
 }
 
-.gallery-item img, .gallery-item video {
+.gallery-item img, .gallery-item video, .gallery-item iframe {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: none;
   transition: var(--transition-smooth);
 }
 

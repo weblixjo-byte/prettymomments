@@ -908,9 +908,16 @@ function createGalleryHTML(item, index) {
   
   let mediaHtml = '';
   if (item.type === 'video') {
-    mediaHtml = `<video src="${item.url}" autoplay muted loop playsinline></video>`;
+    if (item.url.includes('instagram.com')) {
+      let embedUrl = item.url.split('?')[0];
+      if (!embedUrl.endsWith('/')) embedUrl += '/';
+      if (!embedUrl.endsWith('embed/')) embedUrl += 'embed/';
+      mediaHtml = `<iframe src="${embedUrl}" class="instagram-reel-iframe" frameborder="0" scrolling="no" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" style="width:100%; height:100%; border:none;" loading="lazy"></iframe>`;
+    } else {
+      mediaHtml = `<video src="${item.url}" muted loop playsinline preload="metadata" style="background-color: #faf9f6; width:100%; height:100%; object-fit:cover;"></video>`;
+    }
   } else {
-    mediaHtml = `<img src="${item.url}" alt="${item.title}">`;
+    mediaHtml = `<img src="${item.url}" alt="${item.title}" loading="lazy" style="background-color: #faf9f6; width:100%; height:100%; object-fit:cover;">`;
   }
 
   return `
@@ -922,6 +929,36 @@ function createGalleryHTML(item, index) {
       </div>
     </div>
   `;
+}
+
+// Smart Video Observer to play videos only when visible on screen
+function initGalleryVideoPlayback() {
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          video.play().catch(err => {
+            console.log("Video autoplay prevented:", err);
+          });
+        } else {
+          video.pause();
+        }
+      });
+    }, {
+      threshold: 0.2 // Trigger when 20% of the video is visible
+    });
+
+    const videos = document.querySelectorAll('#dynamic-gallery-grid video');
+    videos.forEach(v => videoObserver.observe(v));
+  } else {
+    // Fallback for older browsers
+    const videos = document.querySelectorAll('#dynamic-gallery-grid video');
+    videos.forEach(v => {
+      v.setAttribute('autoplay', '');
+      v.play().catch(() => {});
+    });
+  }
 }
 
 window.initDynamicGallery = async function() {
@@ -949,6 +986,9 @@ window.initDynamicGallery = async function() {
   });
   
   grid.innerHTML = html;
+
+  // Initialize smart video observer
+  initGalleryVideoPlayback();
   
   if (window.revealObserver) {
     const newReveals = grid.querySelectorAll('.reveal');
