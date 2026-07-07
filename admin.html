@@ -982,10 +982,27 @@
                   </select>
                 </div>
               </div>
+              
               <div class="form-group">
-                <label for="gal-url">Media URL / Local Path *</label>
-                <input type="text" id="gal-url" required placeholder="e.g. images/my_photo.jpg">
+                <label>Media Source *</label>
+                <select id="gal-source" onchange="toggleGalleryInputType(this.value)">
+                  <option value="upload">Upload File (From device)</option>
+                  <option value="link">Direct URL / Local Assets</option>
+                </select>
               </div>
+
+              <!-- Upload File Input -->
+              <div class="form-group" id="gal-file-group">
+                <label for="gal-file">Upload File *</label>
+                <input type="file" id="gal-file" accept="image/*,video/*" style="padding:10px; border:1px solid var(--border-soft); border-radius:12px; width:100%; font-family:var(--font-sans);">
+              </div>
+
+              <!-- Direct URL Input -->
+              <div class="form-group" id="gal-link-group" style="display:none;">
+                <label for="gal-url">Media URL / Local Path *</label>
+                <input type="text" id="gal-url" placeholder="e.g. images/my_photo.jpg">
+              </div>
+
               <button type="submit" class="form-submit-btn" id="save-gal-btn" style="background-color: var(--primary-teal); color: var(--text-dark);">Add to Gallery</button>
             </form>
           </div>
@@ -2031,6 +2048,9 @@
     }
 
     checkAuthSession();
+    if (typeof window.toggleGalleryInputType === 'function') {
+      window.toggleGalleryInputType('upload');
+    }
 
     // -------------------------------------------------------------
     // GALLERY MANAGEMENT LOGIC (NEW)
@@ -2102,42 +2122,113 @@
       });
     }
 
+    // Helper to toggle between gallery upload/link
+    window.toggleGalleryInputType = function(value) {
+      const fileGroup = document.getElementById('gal-file-group');
+      const linkGroup = document.getElementById('gal-link-group');
+      const fileInput = document.getElementById('gal-file');
+      const urlInput = document.getElementById('gal-url');
+      
+      if (!fileGroup || !linkGroup || !fileInput || !urlInput) return;
+
+      if (value === 'upload') {
+        fileGroup.style.display = 'block';
+        linkGroup.style.display = 'none';
+        fileInput.required = true;
+        urlInput.required = false;
+      } else {
+        fileGroup.style.display = 'none';
+        linkGroup.style.display = 'block';
+        fileInput.required = false;
+        urlInput.required = true;
+      }
+    };
+
+    // Helper to get gallery uploaded media source URL
+    async function getUploadedGallerySrc() {
+      const source = document.getElementById('gal-source').value;
+      if (source === 'link') {
+        return document.getElementById('gal-url').value.trim();
+      }
+      
+      const fileInput = document.getElementById('gal-file');
+      if (fileInput.files.length === 0) return null;
+      
+      const file = fileInput.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `gallery-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+      const filePath = `${fileName}`;
+      
+      if (isOnlineMode) {
+        const { data, error } = await supabaseClient.storage
+          .from('product-images')
+          .upload(filePath, file);
+        if (error) throw error;
+        
+        const { data: { publicUrl } } = supabaseClient.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+        return publicUrl;
+      } else {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      }
+    }
+
     document.getElementById('add-gallery-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const title = document.getElementById('gal-title').value.trim();
-      const desc = document.getElementById('gal-desc').value.trim();
-      const type = document.getElementById('gal-type').value;
-      const isTall = document.getElementById('gal-layout').value === 'true';
-      const url = document.getElementById('gal-url').value.trim();
+      const saveBtn = document.getElementById('save-gal-btn');
+      const originalText = saveBtn.textContent;
+      saveBtn.textContent = 'Uploading & Saving...';
+      saveBtn.disabled = true;
 
-      const newItem = {
-        title,
-        description: desc,
-        type,
-        isTall,
-        url,
-        created_at: new Date().toISOString()
-      };
-
-      if (isOnlineMode) {
-        try {
-          const { error } = await supabaseClient.from('gallery').insert([newItem]);
-          if (error) throw error;
-        } catch (err) {
-          console.error(err);
-          Swal.fire({ title: 'Error', text: 'Error saving to DB: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
+      try {
+        const mediaUrl = await getUploadedGallerySrc();
+        if (!mediaUrl) {
+          Swal.fire({ title: 'Warning', text: 'Please select or upload a media file.', icon: 'warning', confirmButtonColor: '#d5a153' });
+          saveBtn.textContent = originalText;
+          saveBtn.disabled = false;
           return;
         }
-      } else {
-        newItem.id = Date.now();
-        adminGalleryList.unshift(newItem); // Add to top
-        localStorage.setItem('pretty_moments_gallery', JSON.stringify(adminGalleryList));
-      }
 
-      Swal.fire({ title: 'Success', text: 'Media added to gallery successfully!', icon: 'success', confirmButtonColor: '#d5a153' });
-      document.getElementById('add-gallery-form').reset();
-      loadAdminGallery();
+        const title = document.getElementById('gal-title').value.trim();
+        const desc = document.getElementById('gal-desc').value.trim();
+        const type = document.getElementById('gal-type').value;
+        const isTall = document.getElementById('gal-layout').value === 'true';
+
+        const newItem = {
+          title,
+          description: desc,
+          type,
+          isTall,
+          url: mediaUrl,
+          created_at: new Date().toISOString()
+        };
+
+        if (isOnlineMode) {
+          const { error } = await supabaseClient.from('gallery').insert([newItem]);
+          if (error) throw error;
+        } else {
+          newItem.id = Date.now();
+          adminGalleryList.unshift(newItem); // Add to top
+          localStorage.setItem('pretty_moments_gallery', JSON.stringify(adminGalleryList));
+        }
+
+        Swal.fire({ title: 'Success', text: 'Media added to gallery successfully!', icon: 'success', confirmButtonColor: '#d5a153' });
+        e.target.reset();
+        window.toggleGalleryInputType('upload');
+        loadAdminGallery();
+      } catch (err) {
+        console.error(err);
+        Swal.fire({ title: 'Error', text: 'Error saving to DB: ' + err.message, icon: 'error', confirmButtonColor: '#d5a153' });
+      } finally {
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
+      }
     });
 
     async function deleteGalleryItem(id) {
